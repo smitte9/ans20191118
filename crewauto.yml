@@ -1,0 +1,34 @@
+---
+- name: Playbook with ans
+  hosts: planetexpress
+
+  vars:
+          cargo1: "prizes for claw crane"
+          cargo2: "popcorn"
+          cargo3: "pillows"
+
+  vars_files:
+          - /home/student/ans/vars/vars.yml
+  tasks:
+          - name: "Deloy orders to the crew"
+            template:
+                    src: /home/student/ans/templates/orders.txt.j2
+                    dest: ~/orders.txt
+            tags:
+                    - orders
+
+          - name: "Deploy the cargo manafest"
+            template:
+                    src: /home/student/ans/templates/cargo_manafest.txt.j2
+                    dest: ~/cargo_manafest.txt
+            tags:
+                    - cargo
+                    - ship_prep
+
+          - name: "install naviation charts"
+            template:
+                    src: /home/student/ans/templates/navigation_charts.cfg.j2
+                    dest: ~/naviation_carts.cfg
+            tags:
+                    - nav
+                    - ship_prep
