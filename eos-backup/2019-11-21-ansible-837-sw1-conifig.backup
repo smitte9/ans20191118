@@ -1,0 +1,48 @@
+! Command: show running-config
+! device: ansible-837-sw1 (vEOS, EOS-4.22.0F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+transceiver qsfp default-mode 4x10G
+!
+hostname ansible-837-sw1
+!
+spanning-tree mode mstp
+!
+no aaa root
+!
+username admin role network-admin secret sha512 $6$x6NhlqmfgMMpOB3V$vFHlmfuyNiK8M4f0jSQm.WovDZuOU9qBjCUUQ2Q5RDM4K8.MIB4WL7zuxHgxK4EPC4QBs99eyKoXABpof9qG61
+!
+interface Ethernet1
+!
+interface Ethernet2
+!
+interface Ethernet3
+!
+interface Ethernet4
+!
+interface Ethernet5
+!
+interface Ethernet6
+!
+interface Ethernet7
+!
+interface Ethernet8
+!
+interface Ethernet9
+!
+interface Ethernet10
+!
+interface Ethernet11
+!
+interface Ethernet12
+!
+interface Ethernet13
+!
+interface Management1
+   ip address dhcp
+   dhcp client accept default-route
+!
+no ip routing
+!
+end

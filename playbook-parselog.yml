@@ -1,0 +1,60 @@
+---
+- name: create a playbook that parses logs and sends emails on hits
+  hosts: planetexpress
+  
+  ## logtosearch should be a directory NOT just a file
+  vars:
+     logtosearch: "/var/log/"
+     storeloc: "~/logstomeail/"
+
+  tasks:
+
+  ## parse log file on target machines
+  ## log location /var/log/bootstrap.log
+  ## if match on WARNING save that line
+    - name: Parse log file
+      find:
+          contains: ^WARNING.*
+          paths: "{{ logtosearch }}"
+          use_regex: yes  # unclear how this parameter works, poorly documented
+      register: results
+
+    - name: what is results??
+      debug:
+          var: results
+
+    - name: create a directory on controller to store files to send in emial
+      file:
+          path: ~/storeloc/
+          state: directory
+      delegate: localhost
+
+    - name: fetch files and bring them back to the controller
+          fetch:
+              src: "{{ item.path }}"
+              dest: ~/storeloc/
+          loop: "{{ results.files }}"
+
+    - name: archive our results
+      archive:
+          path: "{{ sotreloc }}*"
+          dest: "{{ storeloc }}filetoemail.gz"
+      delegate_to: localhost
+      run_once: yes
+
+    - name: Sending an e-mail using Gmail SMTP servers
+      mail:
+          host: smtp.gmail.com
+          port: 587
+          username: username@gmail.com
+          password: mysecret
+          to: John Smith <john.smith@example.com>
+          subject: Ansible-report
+          body: System {{ ansible_hostname }} has been successfully provisioned.
+      delegate_to: localhost
+
+  #
+  ## write out saved lines to a file
+  ## copy module would do this...
+  #
+  ## send email with contents of file we created

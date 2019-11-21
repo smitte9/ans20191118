@@ -1,0 +1,9 @@
+---
+- name: showing how to rn a custom modulue
+  hosts: localhosts
+
+  tasks:
+
+    - name: run the thursday module
+      thursday:
+              name: teddy
